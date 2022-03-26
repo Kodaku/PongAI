@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         isPlayer1HitPresent = true;
         player1.SetNextState(grid, ball);
         player1.QUpdate(1.0f, false);
-        player1.UpdateModel(1.0f);
+        // player1.UpdateModel(1.0f);
         dataManager.IncreaseHitCount(isPlayer1:true);
         isPlayer1HitPresent = false;
     }
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
         isPlayer2HitPresent = true;
         player2.SetNextState(grid, ball);
         player2.QUpdate(1.0f, false);
-        player2.UpdateModel(1.0f);
+        // player2.UpdateModel(1.0f);
         dataManager.IncreaseHitCount(isPlayer1:false);
         isPlayer2HitPresent = false;
     }
@@ -131,8 +131,8 @@ public class GameManager : MonoBehaviour
             if(!isPlayer2HitPresent)
                 player2.SetNextState(grid, ball);
 
-            player1.UpdateAllTau();
-            player2.UpdateAllTau();
+            // player1.UpdateAllTau();
+            // player2.UpdateAllTau();
 
             if((ballCell.column <= player1Cell.column && (ballCell.row < player1Cell.row - 1 || ballCell.row > player1Cell.row + 1)) ||
                 (ballCell.column >= player2Cell.column && (ballCell.row < player2Cell.row - 1 || ballCell.row > player2Cell.row + 1)))
@@ -143,9 +143,9 @@ public class GameManager : MonoBehaviour
 
                     float reward = Mathf.RoundToInt(-100.0f - Vector2.Distance(player1.transform.position, ball.transform.position) * 10.0f);
                     player1.QUpdate(reward, true);
-                    player1.UpdateModel(reward);
+                    // player1.UpdateModel(reward);
                     player2.QUpdate(0.0f, true);
-                    player2.UpdateModel(0.0f);
+                    // player2.UpdateModel(0.0f);
                 }
                 else if((ballCell.column >= player2Cell.column && (ballCell.row < player2Cell.row - 1 || ballCell.row > player2Cell.row + 1)))
                 {
@@ -153,9 +153,9 @@ public class GameManager : MonoBehaviour
 
                     float reward = Mathf.RoundToInt(-100.0f - Vector2.Distance(player2.transform.position, ball.transform.position) * 10.0f);
                     player2.QUpdate(reward, true);
-                    player2.UpdateModel(reward);
+                    // player2.UpdateModel(reward);
                     player1.QUpdate(0.0f, true);
-                    player1.UpdateModel(0.0f);
+                    // player1.UpdateModel(0.0f);
                 }
 
                 Reset();
@@ -163,17 +163,16 @@ public class GameManager : MonoBehaviour
             else
             {
                 player1.QUpdate(0.0f, false);
-                player1.UpdateModel(0.0f);
+                // player1.UpdateModel(0.0f);
                 player2.QUpdate(0.0f, false);
-                player2.UpdateModel(0.0f);
+                // player2.UpdateModel(0.0f);
             }
 
-            for(int i = 0; i < 50; i++)
-            {
-                // print("Planning Step");
-                player1.RunSimulation();
-                player2.RunSimulation();
-            }
+            // for(int i = 0; i < 50; i++)
+            // {
+            //     player1.RunSimulation();
+            //     player2.RunSimulation();
+            // }
 
             currentUpdateTimer = 0.0f;
         }
@@ -181,10 +180,10 @@ public class GameManager : MonoBehaviour
 
     private void Reset()
     {
-        // player1.SaveData("policy1", "q1", "model1");
-        // player2.SaveData("policy2", "q2", "model2");
+        player1.SaveData("policy1", "q1", "model1");
+        player2.SaveData("policy2", "q2", "model2");
 
-        // dataManager.RegisterObservation();
+        dataManager.RegisterObservation();
         dataManager.Reset();
 
         debugger.Reset();
